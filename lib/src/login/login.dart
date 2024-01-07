@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:probation/components/button.dart';
 import 'package:probation/components/text_field.dart';
-import 'package:probation/src/home/register/register.dart';
+import 'package:probation/src/list/member_list.dart';
+import 'package:probation/src/register/register.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,8 +21,8 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
         // resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-      child: Center(
+        body: Center(
+      child: SingleChildScrollView(
         child: Column(children: [
           Container(
             padding: const EdgeInsets.only(top: 100),
@@ -80,8 +81,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
             child: const Text('Register'),
           ),
+             OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const MemberList()));
+            },
+            style: OutlinedButton.styleFrom(
+                // backgroundColor: Colors.red,
+                ),
+            child: const Text('View'),
+          ),
         ]),
       ),
-    ));
+    )
+    );
   }
 }

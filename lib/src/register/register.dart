@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:probation/components/text_field.dart';
-import 'package:probation/controller/memberController.dart';
+import 'package:probation/controller/member_controller.dart';
 import 'package:probation/model/member.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -22,8 +22,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
+      body: Center(
+        child: SingleChildScrollView(
           child: (futureMember == null) ? buildColumn() : buildFutureBuilder(),
         ),
       ),
@@ -150,14 +150,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
           // shadowColor: Colors.yellow,
           child: ElevatedButton(
             onPressed: () {
-             setState(() {
-               futureMember = createMember(
-                emailController.text,
-                firstNameController.text,
-                lastNameController.text,
-                phoneNumberController.text,
-              );
-             });
+              setState(() {
+                futureMember = createMember(
+                  emailController.text,
+                  firstNameController.text,
+                  lastNameController.text,
+                  phoneNumberController.text,
+                );
+              });
             },
             child: const Center(
               child: Text(
@@ -174,17 +174,56 @@ class _RegistrationPageState extends State<RegistrationPage> {
     ]);
   }
 
- FutureBuilder<Member> buildFutureBuilder() {
+  FutureBuilder<Member> buildFutureBuilder() {
     return FutureBuilder<Member>(
       future: futureMember,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Text(snapshot.data!.email);
+          return AlertDialog(
+            title: const Text('Success'),
+            content: const Text('Registration Completed'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          );
+          // Center(
+          //   child: Column(children: [
+          //     Text(
+          //       snapshot.data!.email,
+          //     ),
+          //      Text(
+          //       snapshot.data!.first_name,
+          //     ),
+          //      Text(
+          //       snapshot.data!.last_name,
+          //     ),
+          //      Text(
+          //       snapshot.data!.phone_number,
+          //     )
+          //   ]),
+          // );
         } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return Container(
+            padding: const EdgeInsets.only(top: 100, left: 10, right: 10),
+            child: Text('${snapshot.error}'),
+          );
         }
 
-        return const CircularProgressIndicator();
+        return const Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+          ],
+        ));
       },
     );
   }
